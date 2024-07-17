@@ -1,0 +1,67 @@
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Task Manager</h1>
+  <form (ngSubmit)="addTask()" class="mb-4 bg-light p-4 rounded shadow-sm">
+    <div class="row">
+      <div class="form-group col-md-6 mb-3">
+        <label for="taskTitle" class="form-label">Title</label>
+        <input type="text" class="form-control" id="taskTitle" [(ngModel)]="newTask.title" name="title" required #title="ngModel">
+      </div>
+      
+      <div class="form-group col-md-6 mb-3">
+        <label for="taskDescription" class="form-label">Description</label>
+        <textarea class="form-control" id="taskDescription" rows="3" [(ngModel)]="newTask.description" name="description" required></textarea>
+      </div>
+      <div class="form-group col-md-6 mb-3">
+        <label for="taskDueDate" class="form-label">Due Date</label>
+        <input type="date" class="form-control" id="taskDueDate" [(ngModel)]="newTask.dueDate" name="dueDate" required [min]="today">
+      </div>
+      <div class="form-group col-md-6 mb-3">
+        <label for="taskPriority" class="form-label">Priority</label>
+        <select class="form-select" id="taskPriority" [(ngModel)]="newTask.priority" name="priority">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-primary btn-lg">
+        {{ editingTaskIndex >= 0 ? 'Update Task' : 'Add Task' }}
+      </button>
+    </div>
+  </form>
+
+  <div class="text-center mb-4">
+    <button type="button" class="btn btn-outline-secondary me-2" (click)="sortTasksByDueDate()">
+      Sort by Due Date
+    </button>
+    <button type="button" class="btn btn-outline-secondary me-2" (click)="sortTasksByPriority()">
+      Sort by Priority
+    </button>
+    <button type="button" class="btn btn-outline-secondary" (click)="sortTasksByStatus()">
+      Sort by Status
+    </button>
+    
+  </div>
+
+  <h2 class="mt-5" *ngIf="tasks.length > 0">Task List</h2>
+  <div class="row">
+    <div class="col-md-4" *ngFor="let task of tasks; let i = index">
+      <div class="card mt-3 shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+          <h5 class="card-title mb-0">{{ task.title }}</h5>
+        </div>
+        <div class="card-body">
+          <p>{{ task.description }}</p>
+          <p><strong>Due Date:</strong> {{ task.dueDate | date }}</p>
+          <p><strong>Priority:</strong> {{ task.priority }}</p>
+          <div class="d-flex">
+            <button type="button" class="btn btn-warning btn-sm me-2" (click)="editTask(i)">Edit</button>
+            <button type="button" class="btn btn-danger btn-sm me-2" (click)="deleteTask(i)">Delete</button>
+            <button type="button" class="btn btn-info btn-sm" (click)="showHistory(i)">View History</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  
